@@ -6,7 +6,7 @@ npx create-expo-app@latest pokedex
 
 --Restaurar i projeto
 cd pokedex
-npm i
+npm i @expo/vector-icons
 
 --Executar o projeto
 npx expo start
