@@ -1,38 +1,42 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { pokemons } from "@/data/pokemons";
-import Header from "@/components/Header";
-import Card from "@/components/Card";
+import { Image, View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { POKEMON_TYPE_COLORS } from "../../utils/colors";
+import { styles } from "./styles";
+import Button from "../Button";
+import { useRouter } from "expo-router";
 
-export default function Index() {
+export default function Card({ pokemon }) {
+  const router = useRouter();
 
-    const renderPokemon = ({ item }) => (
-        <Card pokemon={item} />
-    );
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "/pokemon",
+          params: { ...pokemon, Tipo: JSON.stringify(pokemon.Tipo) },
+        })
+      }
+      style={[
+        styles.container,
+        { backgroundColor: `${POKEMON_TYPE_COLORS[pokemon.Tipo[0].Nome]}` },
+      ]}
+    >
+      <View style={styles.info}>
+        <Text style={styles.numero}>#{pokemon.Numero}</Text>
+        <Text style={styles.nome}>{pokemon.Nome}</Text>
 
-    return (
-        <View style={styles.container}>
-            <Header title="Pokédex" />
+        <ScrollView horizontal>
+          {pokemon.Tipo.map((tipo) => (
+            <Button tipo={tipo} key={tipo.Nome} />
+          ))}
+        </ScrollView>
+      </View>
 
-            <FlatList
-                data={pokemons}
-                style={styles.cards}
-                keyExtractor={(pokemon) => pokemon.Numero.toString()}
-                renderItem={renderPokemon}
-                initialNumToRender={10}
-                maxToRenderPerBatch={10}
-                windowSize={5}
-            />
-        </View>
-    );
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: pokemon.Imagem }}
+          style={styles.imagem}
+        />
+      </View>
+    </TouchableOpacity>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        flexDirection: "column",
-    },
-    cards: {
-        padding: 15,
-    },
-});
