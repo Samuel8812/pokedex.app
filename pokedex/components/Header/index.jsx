@@ -1,5 +1,5 @@
 import { Image, Text, View, Pressable } from "react-native";
-import { styles } from "./styles";
+import { Styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
